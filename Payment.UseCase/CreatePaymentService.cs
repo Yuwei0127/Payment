@@ -13,7 +13,7 @@ public class CreatePaymentService : ICreatePaymentService
         _paymentOutPort = paymentOutPort;
     }
 
-    public async Task<Guid> HandlerAsync(Guid orderId)
+    public async Task<Guid> HandlerAsync(Guid orderId,decimal amount)
     {
         var newPaymentId = Guid.NewGuid();
 
@@ -21,6 +21,7 @@ public class CreatePaymentService : ICreatePaymentService
         {
             OrderId = newPaymentId,
             PaymentStatus = PaymentStatusEnum.Pending,
+            Amount = amount,
             CreateAt = DateTime.Now,
             FailedAt = null,
             FailureReason = null,

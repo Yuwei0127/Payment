@@ -15,6 +15,11 @@ public class Payment : AggregateRoot<PaymentId>
     /// 付款狀態
     /// </summary>
     public PaymentStatusEnum PaymentStatus { get; set; }
+
+    /// <summary>
+    /// 金額
+    /// </summary>
+    public decimal Amount { get; set; }
     
     /// <summary>
     /// 建立時間
@@ -45,6 +50,7 @@ public class Payment : AggregateRoot<PaymentId>
                 Id = Guid.NewGuid();
                 OrderId = e.OrderId;
                 PaymentStatus = PaymentStatusEnum.Pending;
+                Amount = e.Amount;
                 CreateAt = DateTime.Now;
                 FailedAt = null;
                 FailureReason = string.Empty;
