@@ -7,8 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Payment.Entities\Payment.Entities.csproj" />
-      <ProjectReference Include="..\Payment.SeedWork\Payment.SeedWork.csproj" />
+      <ProjectReference Include="..\Payment.UseCase\Payment.UseCase.csproj" />
     </ItemGroup>
 
 </Project>

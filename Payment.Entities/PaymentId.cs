@@ -1,10 +1,10 @@
 using Payment.SeedWork;
 
-namespace Payment.UseCase;
+namespace Payment.Entities;
 
 public record PaymentId : ValueObject<PaymentId>
 {
-    private Guid Value { get; set; }
+    public Guid Value { get; set; }
 
     public PaymentId(Guid value)
     {
@@ -18,4 +18,9 @@ public record PaymentId : ValueObject<PaymentId>
 
     public static implicit operator Guid(PaymentId self) => self.Value;
     public static implicit operator PaymentId(Guid self) => new(self);
+
+    protected PaymentId()
+    {
+        
+    }
 }
