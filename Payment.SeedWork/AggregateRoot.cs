@@ -78,7 +78,10 @@ public abstract class AggregateRoot<TId> where TId : ValueObject<TId>
     /// <param name="domainEvent">The domain event.</param>
     protected void Apply(DomainEvent domainEvent)
     {
+        // 觸發事件分類
         When(domainEvent);
+        
+        // 驗證
         EnsureValidState();
         RaiseEvent(domainEvent);
     }

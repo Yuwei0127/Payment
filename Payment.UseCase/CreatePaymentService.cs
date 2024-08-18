@@ -17,16 +17,9 @@ public class CreatePaymentService : ICreatePaymentService
     {
         var newPaymentId = Guid.NewGuid();
 
-        var success = await _paymentOutPort.SaveAsync(new Entities.Payment
-        {
-            OrderId = newPaymentId,
-            PaymentStatus = PaymentStatusEnum.Pending,
-            Amount = amount,
-            CreateAt = DateTime.Now,
-            FailedAt = null,
-            FailureReason = null,
-            TransactionId = null
-        });
+        var newPayment = new Entities.Payment(orderId, amount);
+
+        var success = await _paymentOutPort.SaveAsync(newPayment);
 
         return success ? newPaymentId : Guid.Empty;
     }

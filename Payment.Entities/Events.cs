@@ -6,7 +6,7 @@ namespace Payment.Entities;
 /// <summary>
 /// 新增付款事件
 /// </summary>
-public record AddPaymentEvent(Guid OrderId,decimal Amount) : DomainEvent;
+public record CreatePaymentEvent(Guid OrderId,decimal Amount) : DomainEvent;
 
 /// <summary>
 /// 取消付款事件

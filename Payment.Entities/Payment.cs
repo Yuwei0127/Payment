@@ -40,21 +40,25 @@ public class Payment : AggregateRoot<PaymentId>
     /// 外部系統交易 Id
     /// </summary>
     public string? TransactionId { get; set; }
-    
+
+    public Payment(Guid orderId, decimal amount)
+    {
+        Apply(new CreatePaymentEvent(orderId, amount));
+    }
 
     protected override void When(DomainEvent @event)
     {
         switch (@event)
         {
-            case AddPaymentEvent e :
+            case CreatePaymentEvent e :
                 Id = Guid.NewGuid();
                 OrderId = e.OrderId;
                 PaymentStatus = PaymentStatusEnum.Pending;
                 Amount = e.Amount;
                 CreateAt = DateTime.Now;
                 FailedAt = null;
-                FailureReason = string.Empty;
-                TransactionId = string.Empty;
+                FailureReason = null;
+                TransactionId = null;
                 break;
             
             case CancelPaymentEvent e :
