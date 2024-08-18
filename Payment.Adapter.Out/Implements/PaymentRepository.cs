@@ -19,7 +19,6 @@ public class PaymentRepository : IPaymentOutPort
     /// </summary>
     /// <param name="paymentId"></param>
     /// <returns></returns>
-    /// <exception cref="NotImplementedException"></exception>
     public async Task<Entities.Payment?> GetAsync(Guid paymentId)
     {
         var payment = await _context.Payments
@@ -32,12 +31,13 @@ public class PaymentRepository : IPaymentOutPort
     /// <summary>
     /// 儲存
     /// </summary>
-    /// <param name="topic"></param>
+    /// <param name="payment"></param>
     /// <returns></returns>
-    /// <exception cref="NotImplementedException"></exception>
-    public Task<bool> SaveAsync(Entities.Payment topic)
+    public async Task<bool> SaveAsync(Entities.Payment payment)
     {
-        throw new NotImplementedException();
+        _context.Payments.Update(payment);
+        var successCount = await _context.SaveChangesAsync();
+        return successCount > 0;
     }
     
     /// <summary>
@@ -45,9 +45,10 @@ public class PaymentRepository : IPaymentOutPort
     /// </summary>
     /// <param name="payment"></param>
     /// <returns></returns>
-    /// <exception cref="NotImplementedException"></exception>
-    public Task<bool> UpdateAsync(Entities.Payment payment)
+    public async Task<bool> UpdateAsync(Entities.Payment payment)
     {
-        throw new NotImplementedException();
+        _context.Payments.Update(payment);
+        var successCount = await _context.SaveChangesAsync();
+        return successCount > 0;
     }
 }

@@ -1,31 +1,29 @@
-using Payment.Entities.Exceptions;
-using Payment.SeedWork.Enum;
 using Payment.UseCase.Port.In;
 using Payment.UseCase.Port.Out;
 
 namespace Payment.UseCase;
 
-public class CancelPaymentService : ICancelPaymentService
+public class CompletePaymentService : ICompletePaymentService
 {
     private readonly IPaymentOutPort _paymentOutPort;
 
-    public CancelPaymentService(IPaymentOutPort paymentOutPort)
+    public CompletePaymentService(IPaymentOutPort paymentOutPort)
     {
         _paymentOutPort = paymentOutPort;
     }
 
-    public async Task<bool> HandleAsync(Guid paymentId, string failedReason)
+    public async Task<bool> HandleAsync(Guid paymentId)
     {
         var payment = await _paymentOutPort.GetAsync(paymentId);
         if (payment is null)
         {
-            throw new PaymentDomainException("無此付款單資訊");
+            return false;
         }
 
-        payment.PaymentFailed(payment.Id, failedReason);
-        
+        payment.PaymentCompleted(payment.Id);
+
         var success = await _paymentOutPort.UpdateAsync(payment);
-        
+
         return success;
     }
 }

@@ -13,6 +13,12 @@ public record CreatePaymentEvent(Guid OrderId,decimal Amount) : DomainEvent;
 /// </summary>
 public record PaymentFailedEvent(Guid PaymentId,string FailedReason) : DomainEvent;
 
+/// <summary>
+/// 付款完成
+/// </summary>
+/// <param name="PaymentId"></param>
+public record PaymentCompletedEvent(Guid PaymentId) : DomainEvent;
+
 
 
 

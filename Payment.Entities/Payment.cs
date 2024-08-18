@@ -50,6 +50,11 @@ public class Payment : AggregateRoot<PaymentId>
     {
         Apply(new PaymentFailedEvent(paymentId, failedReason));
     }
+
+    public void PaymentCompleted(Guid paymentId)
+    {
+        Apply(new PaymentCompletedEvent(paymentId));
+    }
     
     protected override void When(DomainEvent @event)
     {
@@ -68,6 +73,11 @@ public class Payment : AggregateRoot<PaymentId>
                 PaymentStatus = PaymentStatusEnum.Failed;
                 FailedAt = DateTime.Now;
                 FailureReason = e.FailedReason;
+                break;
+            
+            case PaymentCompletedEvent e :
+                Id = e.PaymentId;
+                PaymentStatus = PaymentStatusEnum.Completed;
                 break;
         }
     }

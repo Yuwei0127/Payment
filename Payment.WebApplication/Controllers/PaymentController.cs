@@ -10,13 +10,15 @@ namespace Payment.WebApplication.Controllers;
 [ApiVersion("1.0")]
 public class PaymentController : ControllerBase
 {
-    private readonly ICreatePaymentService _createPaymentService;
+    private readonly IRequestPaymentService _requestPaymentService;
     private readonly ICancelPaymentService _cancelPaymentService;
+    private readonly ICompletePaymentService _completePaymentService;
 
-    public PaymentController(ICreatePaymentService createPaymentService, ICancelPaymentService cancelPaymentService)
+    public PaymentController(IRequestPaymentService requestPaymentService, ICancelPaymentService cancelPaymentService, ICompletePaymentService completePaymentService)
     {
-        _createPaymentService = createPaymentService;
+        _requestPaymentService = requestPaymentService;
         _cancelPaymentService = cancelPaymentService;
+        _completePaymentService = completePaymentService;
     }
 
     /// <summary>
@@ -32,7 +34,7 @@ public class PaymentController : ControllerBase
             return BadRequest();
         }
         
-        var paymentId = await _createPaymentService.HandlerAsync(parameter.OrderId,parameter.Amount);
+        var paymentId = await _requestPaymentService.HandleAsync(parameter.OrderId,parameter.Amount);
         if (paymentId == Guid.Empty)
         {
             return BadRequest();
@@ -55,9 +57,22 @@ public class PaymentController : ControllerBase
             return BadRequest();
         }
 
-        var cancel = await _cancelPaymentService.HandlerAsync(paymentId, failedReason);
+        var cancel = await _cancelPaymentService.HandleAsync(paymentId, failedReason);
         
         return Ok(cancel);
+    }
+    
+    [HttpPost]
+    public async Task<IActionResult> CompleteAsync(Guid paymentId)
+    {
+        if (paymentId == Guid.Empty)
+        {
+            return BadRequest();
+        }
+
+        var complete = await _completePaymentService.HandleAsync(paymentId);
+
+        return Ok(complete);
     }
 }
 

@@ -15,9 +15,9 @@ public interface IPaymentOutPort
     /// <summary>
     /// 儲存
     /// </summary>
-    /// <param name="topic"></param>
+    /// <param name="payment"></param>
     /// <returns></returns>
-    Task<bool> SaveAsync(Entities.Payment topic);
+    Task<bool> SaveAsync(Entities.Payment payment);
 
     /// <summary>
     /// 更新

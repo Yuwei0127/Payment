@@ -4,16 +4,16 @@ using Payment.UseCase.Port.Out;
 
 namespace Payment.UseCase;
 
-public class CreatePaymentService : ICreatePaymentService
+public class RequestPaymentService : IRequestPaymentService
 {
     private readonly IPaymentOutPort _paymentOutPort;
 
-    public CreatePaymentService(IPaymentOutPort paymentOutPort)
+    public RequestPaymentService(IPaymentOutPort paymentOutPort)
     {
         _paymentOutPort = paymentOutPort;
     }
 
-    public async Task<Guid> HandlerAsync(Guid orderId,decimal amount)
+    public async Task<Guid> HandleAsync(Guid orderId,decimal amount)
     {
         var newPayment = new Entities.Payment(orderId, amount);
 
