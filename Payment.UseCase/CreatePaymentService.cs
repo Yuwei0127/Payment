@@ -15,12 +15,10 @@ public class CreatePaymentService : ICreatePaymentService
 
     public async Task<Guid> HandlerAsync(Guid orderId,decimal amount)
     {
-        var newPaymentId = Guid.NewGuid();
-
         var newPayment = new Entities.Payment(orderId, amount);
 
         var success = await _paymentOutPort.SaveAsync(newPayment);
 
-        return success ? newPaymentId : Guid.Empty;
+        return success ? newPayment.Id : Guid.Empty;
     }
 }

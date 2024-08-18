@@ -9,10 +9,9 @@ namespace Payment.Entities;
 public record CreatePaymentEvent(Guid OrderId,decimal Amount) : DomainEvent;
 
 /// <summary>
-/// 取消付款事件
+/// 付款失敗事件
 /// </summary>
-/// <param name="PaymentId"></param>
-public record CancelPaymentEvent(Guid PaymentId) : DomainEvent;
+public record PaymentFailedEvent(Guid PaymentId,string FailedReason) : DomainEvent;
 
 
 

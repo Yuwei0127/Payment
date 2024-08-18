@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using Payment.Entities;
 using Payment.SeedWork.Enum;
 using Payment.UseCase.Port.Out;
 
@@ -5,15 +7,26 @@ namespace Payment.Adapter.Out.Implements;
 
 public class PaymentRepository : IPaymentOutPort
 {
+    private readonly PaymentDbContext _context;
+
+    public PaymentRepository(PaymentDbContext context)
+    {
+        _context = context;
+    }
+
     /// <summary>
     /// 取得
     /// </summary>
-    /// <param name="orderId"></param>
+    /// <param name="paymentId"></param>
     /// <returns></returns>
     /// <exception cref="NotImplementedException"></exception>
-    public Task<Entities.Payment> GetAsync(Guid orderId)
+    public async Task<Entities.Payment?> GetAsync(Guid paymentId)
     {
-        throw new NotImplementedException();
+        var payment = await _context.Payments
+            .Where(p => p.Id == new PaymentId(paymentId))
+            .FirstOrDefaultAsync();
+
+        return payment ?? null;
     }
 
     /// <summary>
@@ -23,18 +36,6 @@ public class PaymentRepository : IPaymentOutPort
     /// <returns></returns>
     /// <exception cref="NotImplementedException"></exception>
     public Task<bool> SaveAsync(Entities.Payment topic)
-    {
-        throw new NotImplementedException();
-    }
-
-    /// <summary>
-    /// 變更付款狀態
-    /// </summary>
-    /// <param name="orderId"></param>
-    /// <param name="paymentStatus"></param>
-    /// <returns></returns>
-    /// <exception cref="NotImplementedException"></exception>
-    public Task<bool> ChangePaymentStatusAsync(Guid orderId, PaymentStatusEnum paymentStatus)
     {
         throw new NotImplementedException();
     }

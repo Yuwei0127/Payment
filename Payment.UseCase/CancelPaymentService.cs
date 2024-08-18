@@ -1,3 +1,4 @@
+using Payment.Entities.Exceptions;
 using Payment.SeedWork.Enum;
 using Payment.UseCase.Port.In;
 using Payment.UseCase.Port.Out;
@@ -13,14 +14,17 @@ public class CancelPaymentService : ICancelPaymentService
         _paymentOutPort = paymentOutPort;
     }
 
-    public async Task<bool> HandlerAsync(Guid paymentId)
+    public async Task<bool> HandlerAsync(Guid paymentId, string failedReason)
     {
-        // 付款失敗
-        var cancelStatus = PaymentStatusEnum.Failed;
+        var payment = await _paymentOutPort.GetAsync(paymentId);
+        if (payment is null)
+        {
+            throw new PaymentDomainException("無此付款單資訊");
+        }
 
-        var success = await _paymentOutPort.ChangePaymentStatusAsync(paymentId, cancelStatus);
+        payment.PaymentFailed(payment.Id, failedReason);
         
-        // Log
+        var success = await _paymentOutPort.UpdateAsync(payment);
         
         return success;
     }

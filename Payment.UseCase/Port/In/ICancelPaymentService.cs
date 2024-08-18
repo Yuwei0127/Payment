@@ -2,5 +2,5 @@ namespace Payment.UseCase.Port.In;
 
 public interface ICancelPaymentService
 {
-    Task<bool> HandlerAsync(Guid paymentId);
+    Task<bool> HandlerAsync(Guid paymentId, string failedReason);
 }

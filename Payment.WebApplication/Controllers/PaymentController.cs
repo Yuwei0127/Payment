@@ -40,21 +40,22 @@ public class PaymentController : ControllerBase
 
         return Ok(paymentId);
     }
-    
+
     /// <summary>
     /// 取消付款
     /// </summary>
     /// <param name="paymentId"></param>
+    /// <param name="failedReason"></param>
     /// <returns></returns>
     [HttpPost]
-    public async Task<IActionResult> CancelAsync(Guid paymentId)
+    public async Task<IActionResult> CancelAsync(Guid paymentId,string failedReason)
     {
         if (paymentId == Guid.Empty)
         {
             return BadRequest();
         }
 
-        var cancel = await _cancelPaymentService.HandlerAsync(paymentId);
+        var cancel = await _cancelPaymentService.HandlerAsync(paymentId, failedReason);
         
         return Ok(cancel);
     }

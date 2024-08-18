@@ -10,7 +10,7 @@ public interface IPaymentOutPort
     /// </summary>
     /// <param name="orderId"></param>
     /// <returns></returns>
-    Task<Entities.Payment> GetAsync(Guid orderId);
+    Task<Entities.Payment?> GetAsync(Guid orderId);
     
     /// <summary>
     /// 儲存
@@ -18,14 +18,6 @@ public interface IPaymentOutPort
     /// <param name="topic"></param>
     /// <returns></returns>
     Task<bool> SaveAsync(Entities.Payment topic);
-
-    /// <summary>
-    /// 變更付款狀態
-    /// </summary>
-    /// <param name="orderId"></param>
-    /// <param name="paymentStatus"></param>
-    /// <returns></returns>
-    Task<bool> ChangePaymentStatusAsync(Guid orderId,PaymentStatusEnum paymentStatus);
 
     /// <summary>
     /// 更新
