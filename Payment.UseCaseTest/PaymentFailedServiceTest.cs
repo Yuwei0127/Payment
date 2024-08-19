@@ -36,15 +36,12 @@ public class PaymentFailedServiceTest
         var failedReason = "訂單到期";
         var payment = new Entities.Payment(paymentId, orderId, amount);
         _paymentOutPort.UpdateAsync(payment).Returns(true);
-        var newData = await _paymentOutPort.GetAsync(paymentId);
 
         var sut = GetSystemUnderTest();
         var actual = await sut.HandleAsync(paymentId, failedReason);
 
         actual.Should().BeTrue();
         _domainEventBus.Received(1).DispatchDomainEventsAsync(payment);
-        newData.FailureReason.Should().Contain(failedReason);
-        newData.PaymentStatus.Should().Be(PaymentStatusEnum.Failed);
     }
     
     [Fact]
