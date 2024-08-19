@@ -12,7 +12,7 @@ public class CompletePaymentService : ICompletePaymentService
         _paymentOutPort = paymentOutPort;
     }
 
-    public async Task<bool> HandleAsync(Guid paymentId)
+    public async Task<bool> HandleAsync(Guid paymentId, string transactionId)
     {
         var payment = await _paymentOutPort.GetAsync(paymentId);
         if (payment is null)
@@ -20,7 +20,7 @@ public class CompletePaymentService : ICompletePaymentService
             return false;
         }
 
-        payment.PaymentCompleted(payment.Id);
+        payment.PaymentCompleted(transactionId);
 
         var success = await _paymentOutPort.UpdateAsync(payment);
 

@@ -1,5 +1,6 @@
 ﻿using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
+using Payment.Entities;
 using Payment.UseCase.Port.In;
 using Payment.WebApplication.Models.Parameters;
 
@@ -63,14 +64,14 @@ public class PaymentController : ControllerBase
     }
     
     [HttpPost]
-    public async Task<IActionResult> CompleteAsync(Guid paymentId)
+    public async Task<IActionResult> CompleteAsync(Guid paymentId, string transactionId)
     {
         if (paymentId == Guid.Empty)
         {
             return BadRequest();
         }
 
-        var complete = await _completePaymentService.HandleAsync(paymentId);
+        var complete = await _completePaymentService.HandleAsync(paymentId, transactionId);
 
         return Ok(complete);
     }

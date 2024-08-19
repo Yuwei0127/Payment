@@ -4,7 +4,7 @@ namespace Payment.Entities;
 
 public record PaymentId : ValueObject<PaymentId>
 {
-    public Guid Value { get; set; }
+    public Guid Value { get; private set; }
 
     public PaymentId(Guid value)
     {

@@ -6,18 +6,17 @@ namespace Payment.Entities;
 /// <summary>
 /// 新增付款事件
 /// </summary>
-public record CreatePaymentEvent(Guid OrderId,decimal Amount) : DomainEvent;
+public record RequestPaymentEvent(Guid OrderId,decimal Amount) : DomainEvent;
 
 /// <summary>
 /// 付款失敗事件
 /// </summary>
-public record PaymentFailedEvent(Guid PaymentId,string FailedReason) : DomainEvent;
+public record PaymentFailedEvent(string FailedReason) : DomainEvent;
 
 /// <summary>
 /// 付款完成
 /// </summary>
-/// <param name="PaymentId"></param>
-public record PaymentCompletedEvent(Guid PaymentId) : DomainEvent;
+public record PaymentCompletedEvent(string TransactionId) : DomainEvent;
 
 
 

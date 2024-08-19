@@ -22,7 +22,7 @@ public class CancelPaymentService : ICancelPaymentService
             throw new PaymentDomainException("無此付款單資訊");
         }
 
-        payment.PaymentFailed(payment.Id, failedReason);
+        payment.PaymentFailed(failedReason);
         
         var success = await _paymentOutPort.UpdateAsync(payment);
         

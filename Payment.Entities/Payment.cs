@@ -43,25 +43,25 @@ public class Payment : AggregateRoot<PaymentId>
 
     public Payment(Guid orderId, decimal amount)
     {
-        Apply(new CreatePaymentEvent(orderId, amount));
+        Apply(new RequestPaymentEvent(orderId, amount));
     }
     
-    public void PaymentFailed(Guid paymentId, string failedReason)
+    public void PaymentFailed(string failedReason)
     {
-        Apply(new PaymentFailedEvent(paymentId, failedReason));
+        Apply(new PaymentFailedEvent(failedReason));
     }
 
-    public void PaymentCompleted(Guid paymentId)
+    public void PaymentCompleted(string transactionId)
     {
-        Apply(new PaymentCompletedEvent(paymentId));
+        Apply(new PaymentCompletedEvent(transactionId));
     }
     
     protected override void When(DomainEvent @event)
     {
         switch (@event)
         {
-            case CreatePaymentEvent e :
-                Id = Guid.NewGuid();
+            case RequestPaymentEvent e :
+                Id = new PaymentId(Guid.NewGuid());
                 OrderId = e.OrderId;
                 PaymentStatus = PaymentStatusEnum.Pending;
                 Amount = e.Amount;
@@ -69,15 +69,14 @@ public class Payment : AggregateRoot<PaymentId>
                 break;
             
             case PaymentFailedEvent e :
-                Id = e.PaymentId;
                 PaymentStatus = PaymentStatusEnum.Failed;
                 FailedAt = DateTime.Now;
                 FailureReason = e.FailedReason;
                 break;
             
             case PaymentCompletedEvent e :
-                Id = e.PaymentId;
                 PaymentStatus = PaymentStatusEnum.Completed;
+                TransactionId = e.TransactionId;
                 break;
         }
     }
