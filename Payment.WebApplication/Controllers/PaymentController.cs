@@ -12,13 +12,13 @@ namespace Payment.WebApplication.Controllers;
 public class PaymentController : ControllerBase
 {
     private readonly IRequestPaymentService _requestPaymentService;
-    private readonly ICancelPaymentService _cancelPaymentService;
+    private readonly IPaymentFailedService _paymentFailedService;
     private readonly ICompletePaymentService _completePaymentService;
 
-    public PaymentController(IRequestPaymentService requestPaymentService, ICancelPaymentService cancelPaymentService, ICompletePaymentService completePaymentService)
+    public PaymentController(IRequestPaymentService requestPaymentService, IPaymentFailedService paymentFailedService, ICompletePaymentService completePaymentService)
     {
         _requestPaymentService = requestPaymentService;
-        _cancelPaymentService = cancelPaymentService;
+        _paymentFailedService = paymentFailedService;
         _completePaymentService = completePaymentService;
     }
 
@@ -58,7 +58,7 @@ public class PaymentController : ControllerBase
             return BadRequest();
         }
 
-        var cancel = await _cancelPaymentService.HandleAsync(paymentId, failedReason);
+        var cancel = await _paymentFailedService.HandleAsync(paymentId, failedReason);
         
         return Ok(cancel);
     }

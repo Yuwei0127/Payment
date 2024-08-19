@@ -41,9 +41,9 @@ public class Payment : AggregateRoot<PaymentId>
     /// </summary>
     public string? TransactionId { get; set; }
 
-    public Payment(Guid orderId, decimal amount)
+    public Payment(PaymentId id, Guid orderId, decimal amount)
     {
-        Apply(new RequestPaymentEvent(orderId, amount));
+        Apply(new RequestPaymentEvent(id, orderId, amount));
     }
     
     public void PaymentFailed(string failedReason)
@@ -61,7 +61,7 @@ public class Payment : AggregateRoot<PaymentId>
         switch (@event)
         {
             case RequestPaymentEvent e :
-                Id = new PaymentId(Guid.NewGuid());
+                Id = e.Id;
                 OrderId = e.OrderId;
                 PaymentStatus = PaymentStatusEnum.Pending;
                 Amount = e.Amount;

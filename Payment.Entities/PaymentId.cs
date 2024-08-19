@@ -15,7 +15,7 @@ public record PaymentId : ValueObject<PaymentId>
 
         Value = value;
     }
-
+    
     public static implicit operator Guid(PaymentId self) => self.Value;
     public static implicit operator PaymentId(Guid self) => new(self);
 

@@ -1,3 +1,5 @@
+using Payment.Entities;
+
 namespace Payment.UseCase.Port.In;
 
 public interface IRequestPaymentService

@@ -1,17 +1,20 @@
 using Payment.Entities.Exceptions;
+using Payment.SeedWork;
 using Payment.SeedWork.Enum;
 using Payment.UseCase.Port.In;
 using Payment.UseCase.Port.Out;
 
 namespace Payment.UseCase;
 
-public class CancelPaymentService : ICancelPaymentService
+public class PaymentFailedFailedService : IPaymentFailedService
 {
     private readonly IPaymentOutPort _paymentOutPort;
+    private readonly IDomainEventBus _domainEventBus;
 
-    public CancelPaymentService(IPaymentOutPort paymentOutPort)
+    public PaymentFailedFailedService(IPaymentOutPort paymentOutPort, IDomainEventBus domainEventBus)
     {
         _paymentOutPort = paymentOutPort;
+        _domainEventBus = domainEventBus;
     }
 
     public async Task<bool> HandleAsync(Guid paymentId, string failedReason)
@@ -25,6 +28,10 @@ public class CancelPaymentService : ICancelPaymentService
         payment.PaymentFailed(failedReason);
         
         var success = await _paymentOutPort.UpdateAsync(payment);
+        if (success)
+        {
+            await _domainEventBus.DispatchDomainEventsAsync(payment);
+        }
         
         return success;
     }
