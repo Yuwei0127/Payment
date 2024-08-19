@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payment.UseCaseTest", "Paym
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payment.EventBus", "Payment.EventBus\Payment.EventBus.csproj", "{CADC2FB8-4CA6-4FCD-BAF2-0A1BCF163B4C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payment.EntitiesTest", "Payment.EntitiesTest\Payment.EntitiesTest.csproj", "{BD33BC21-B1AE-4A6C-8CAF-43E8AB2637CD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,8 +58,13 @@ Global
 		{CADC2FB8-4CA6-4FCD-BAF2-0A1BCF163B4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CADC2FB8-4CA6-4FCD-BAF2-0A1BCF163B4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CADC2FB8-4CA6-4FCD-BAF2-0A1BCF163B4C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD33BC21-B1AE-4A6C-8CAF-43E8AB2637CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD33BC21-B1AE-4A6C-8CAF-43E8AB2637CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD33BC21-B1AE-4A6C-8CAF-43E8AB2637CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD33BC21-B1AE-4A6C-8CAF-43E8AB2637CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{91297C80-0503-424B-89CC-6CFDB30CABB2} = {739B6333-5BCE-4542-98AB-146B0397FEEB}
+		{BD33BC21-B1AE-4A6C-8CAF-43E8AB2637CD} = {739B6333-5BCE-4542-98AB-146B0397FEEB}
 	EndGlobalSection
 EndGlobal
