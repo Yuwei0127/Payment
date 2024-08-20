@@ -26,39 +26,6 @@ public class PaymentFailedServiceTest
     {
         return new PaymentFailedFailedService(_paymentOutPort, _domainEventBus);
     }
-
-    [Fact]
-    public async Task HandleAsyncTest_輸入OrderId_付款單狀態改為失敗_回傳True()
-    {
-        var orderId = Guid.NewGuid();
-        var paymentId = new Guid();
-        var amount = 100;
-        var failedReason = "訂單到期";
-        var payment = new Entities.Payment(paymentId, orderId, amount);
-        _paymentOutPort.UpdateAsync(payment).Returns(true);
-
-        var sut = GetSystemUnderTest();
-        var actual = await sut.HandleAsync(paymentId, failedReason);
-
-        actual.Should().BeTrue();
-        _domainEventBus.Received(1).DispatchDomainEventsAsync(payment);
-    }
-    
-    [Fact]
-    public async Task HandleAsyncTest_輸入OrderId_付款單狀態更改失敗_回傳False()
-    {
-        var orderId = Guid.NewGuid();
-        var amount = 100;
-        var paymentId = new Guid();
-        var failedReason = "訂單到期";
-        var payment = new Entities.Payment(paymentId, orderId, amount);
-        _paymentOutPort.UpdateAsync(payment).Returns(false);
-
-        var sut = GetSystemUnderTest();
-        var actual = await sut.HandleAsync(paymentId, failedReason);
-
-        actual.Should().BeFalse();
-    }
     
     [Fact]
     public async Task HandleAsyncTest_輸入PaymentId_找不到付款資料_回傳PaymentDomainException例外()
@@ -74,6 +41,41 @@ public class PaymentFailedServiceTest
     }
     
     
+
+    [Fact]
+    public async Task HandleAsyncTest_輸入OrderId_付款單狀態改為失敗_回傳True()
+    {
+        var orderId = Guid.NewGuid();
+        var paymentId = Guid.NewGuid();
+        var amount = 100;
+        var failedReason = "訂單到期";
+        var payment = new Entities.Payment(paymentId, orderId, amount);
+        _paymentOutPort.GetAsync(paymentId).Returns(payment);
+        _paymentOutPort.UpdateAsync(payment).Returns(true);
+
+        var sut = GetSystemUnderTest();
+        var actual = await sut.HandleAsync(paymentId, failedReason);
+
+        actual.Should().BeTrue();
+        _domainEventBus.Received(1).DispatchDomainEventsAsync(payment);
+    }
+    
+    [Fact]
+    public async Task HandleAsyncTest_輸入OrderId_付款單狀態更改失敗_回傳False()
+    {
+        var orderId = Guid.NewGuid();
+        var amount = 100;
+        var paymentId = Guid.NewGuid();
+        var failedReason = "訂單到期";
+        var payment = new Entities.Payment(paymentId, orderId, amount);
+        _paymentOutPort.GetAsync(paymentId).Returns(payment);
+        _paymentOutPort.UpdateAsync(payment).Returns(false);
+
+        var sut = GetSystemUnderTest();
+        var actual = await sut.HandleAsync(paymentId, failedReason);
+
+        actual.Should().BeFalse();
+    }
 }
 
 
