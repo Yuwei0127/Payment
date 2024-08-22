@@ -27,16 +27,6 @@ public class Payment : AggregateRoot<PaymentId>
     public DateTime CreateAt { get; set; }
     
     /// <summary>
-    /// 付款取消時間
-    /// </summary>
-    public DateTime? CancelAt { get; set; }
-    
-    /// <summary>
-    /// 付款取消原因
-    /// </summary>
-    public string? CancelReason { get; set; }
-    
-    /// <summary>
     /// 付款失敗時間
     /// </summary>
     public DateTime? FailedAt { get; set; }
@@ -45,6 +35,16 @@ public class Payment : AggregateRoot<PaymentId>
     /// 付款失敗原因
     /// </summary>
     public string? FailureReason { get; set; }
+    
+    /// <summary>
+    /// 付款取消時間
+    /// </summary>
+    public DateTime? CanceledAt { get; set; }
+    
+    /// <summary>
+    /// 付款取消原因
+    /// </summary>
+    public string? CanceledReason { get; set; }
     
     /// <summary>
     /// 外部系統交易 Id
@@ -85,8 +85,8 @@ public class Payment : AggregateRoot<PaymentId>
             
             case PaymentCancelEvent e :
                 PaymentStatus = PaymentStatusEnum.Canceled;
-                CancelAt = DateTime.Now;
-                CancelReason = e.CancelReason;
+                CanceledAt = DateTime.Now;
+                CanceledReason = e.CancelReason;
                 break;
             
             case PaymentFailedEvent e :
