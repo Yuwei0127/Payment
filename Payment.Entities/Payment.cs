@@ -84,7 +84,7 @@ public class Payment : AggregateRoot<PaymentId>
                 break;
             
             case PaymentCancelEvent e :
-                PaymentStatus = PaymentStatusEnum.Cancel;
+                PaymentStatus = PaymentStatusEnum.Canceled;
                 CancelAt = DateTime.Now;
                 CancelReason = e.CancelReason;
                 break;

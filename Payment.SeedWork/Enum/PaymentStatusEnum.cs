@@ -8,5 +8,5 @@ public enum PaymentStatusEnum
     
     Failed = 2,
     
-    Cancel = 3
+    Canceled = 3
 }
