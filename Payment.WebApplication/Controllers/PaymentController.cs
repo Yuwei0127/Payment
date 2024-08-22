@@ -1,4 +1,5 @@
 ﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Payment.Entities;
 using Payment.UseCase.Port.In;
@@ -12,14 +13,13 @@ namespace Payment.WebApplication.Controllers;
 public class PaymentController : ControllerBase
 {
     private readonly IRequestPaymentService _requestPaymentService;
-    private readonly IPaymentFailedService _paymentFailedService;
-    private readonly ICompletePaymentService _completePaymentService;
+    private readonly IPaymentCancelService _paymentCancelService;
 
-    public PaymentController(IRequestPaymentService requestPaymentService, IPaymentFailedService paymentFailedService, ICompletePaymentService completePaymentService)
+    public PaymentController(IRequestPaymentService requestPaymentService,
+        IPaymentCancelService paymentCancelService)
     {
         _requestPaymentService = requestPaymentService;
-        _paymentFailedService = paymentFailedService;
-        _completePaymentService = completePaymentService;
+        _paymentCancelService = paymentCancelService;
     }
 
     /// <summary>
@@ -34,8 +34,8 @@ public class PaymentController : ControllerBase
         {
             return BadRequest();
         }
-        
-        var paymentId = await _requestPaymentService.HandleAsync(parameter.OrderId,parameter.Amount);
+
+        var paymentId = await _requestPaymentService.HandleAsync(parameter.OrderId, parameter.Amount);
         if (paymentId == Guid.Empty)
         {
             return BadRequest();
@@ -48,33 +48,20 @@ public class PaymentController : ControllerBase
     /// 取消付款
     /// </summary>
     /// <param name="paymentId"></param>
-    /// <param name="failedReason"></param>
+    /// <param name="cancelReason"></param>
     /// <returns></returns>
     [HttpPost]
-    public async Task<IActionResult> CancelAsync(Guid paymentId,string failedReason)
+    public async Task<IActionResult> CancelAsync(Guid paymentId, string cancelReason)
     {
         if (paymentId == Guid.Empty)
         {
             return BadRequest();
         }
-
-        var cancel = await _paymentFailedService.HandleAsync(paymentId, failedReason);
         
-        return Ok(cancel);
+        var cancelSuccess = await _paymentCancelService.HandleAsync(paymentId, cancelReason);
+        return Ok(cancelSuccess);
     }
     
-    [HttpPost]
-    public async Task<IActionResult> CompleteAsync(Guid paymentId, string transactionId)
-    {
-        if (paymentId == Guid.Empty)
-        {
-            return BadRequest();
-        }
-
-        var complete = await _completePaymentService.HandleAsync(paymentId, transactionId);
-
-        return Ok(complete);
-    }
 }
 
 

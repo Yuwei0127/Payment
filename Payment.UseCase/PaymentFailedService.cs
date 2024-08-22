@@ -6,12 +6,12 @@ using Payment.UseCase.Port.Out;
 
 namespace Payment.UseCase;
 
-public class PaymentFailedFailedService : IPaymentFailedService
+public class PaymentFailedService : IPaymentFailedService
 {
     private readonly IPaymentOutPort _paymentOutPort;
     private readonly IDomainEventBus _domainEventBus;
 
-    public PaymentFailedFailedService(IPaymentOutPort paymentOutPort, IDomainEventBus domainEventBus)
+    public PaymentFailedService(IPaymentOutPort paymentOutPort, IDomainEventBus domainEventBus)
     {
         _paymentOutPort = paymentOutPort;
         _domainEventBus = domainEventBus;

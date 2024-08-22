@@ -25,7 +25,7 @@ public class PaymentRepository : IPaymentOutPort
             .Where(p => p.Id == new PaymentId(paymentId))
             .FirstOrDefaultAsync();
 
-        return payment ?? null;
+        return payment;
     }
 
     /// <summary>
@@ -35,7 +35,7 @@ public class PaymentRepository : IPaymentOutPort
     /// <returns></returns>
     public async Task<bool> SaveAsync(Entities.Payment payment)
     {
-        _context.Payments.Update(payment);
+        _context.Payments.Add(payment);
         var successCount = await _context.SaveChangesAsync();
         return successCount > 0;
     }

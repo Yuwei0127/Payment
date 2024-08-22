@@ -26,7 +26,7 @@ public class RequestPaymentServiceTest
     }
 
     [Fact]
-    public async Task HandleAsyncTest_輸入OrderId_建立付款單成功_回傳True與發送事件()
+    public async Task HandleAsyncTest_輸入OrderId_建立付款單成功_回傳True並觸發發送事件()
     {
         // Arrange
         var orderId = Guid.NewGuid();

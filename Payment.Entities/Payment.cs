@@ -27,6 +27,16 @@ public class Payment : AggregateRoot<PaymentId>
     public DateTime CreateAt { get; set; }
     
     /// <summary>
+    /// 付款取消時間
+    /// </summary>
+    public DateTime? CancelAt { get; set; }
+    
+    /// <summary>
+    /// 付款取消原因
+    /// </summary>
+    public string? CancelReason { get; set; }
+    
+    /// <summary>
     /// 付款失敗時間
     /// </summary>
     public DateTime? FailedAt { get; set; }
@@ -44,6 +54,11 @@ public class Payment : AggregateRoot<PaymentId>
     public Payment(PaymentId id, Guid orderId, decimal amount)
     {
         Apply(new RequestPaymentEvent(id, orderId, amount));
+    }
+
+    public void PaymentCancel(string cancelReason)
+    {
+        Apply(new PaymentCancelEvent(cancelReason));
     }
     
     public void PaymentFailed(string failedReason)
@@ -66,6 +81,12 @@ public class Payment : AggregateRoot<PaymentId>
                 PaymentStatus = PaymentStatusEnum.Pending;
                 Amount = e.Amount;
                 CreateAt = DateTime.Now;
+                break;
+            
+            case PaymentCancelEvent e :
+                PaymentStatus = PaymentStatusEnum.Cancel;
+                CancelAt = DateTime.Now;
+                CancelReason = e.CancelReason;
                 break;
             
             case PaymentFailedEvent e :

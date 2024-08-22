@@ -1,5 +1,7 @@
 using System.Diagnostics;
 using FluentAssertions;
+using NSubstitute.ExceptionExtensions;
+using Payment.Entities.Exceptions;
 using Payment.SeedWork.Enum;
 
 namespace Payment.EntitiesTest;
@@ -53,7 +55,18 @@ public class PaymentTest
         payment.PaymentStatus.Should().Be(PaymentStatusEnum.Completed);
         payment.TransactionId.Should().Be(transactionId);
     }
-    
+
+    [Fact]
+    public void PaymentEnsureValidState_InputOrderIdEmpty_ShouldThrowPaymentDomainException()
+    {
+        var paymentId = Guid.NewGuid();
+        var orderId = Guid.Empty;
+        var amount = 100;
+
+        var exception = Assert.Throws<PaymentDomainException>(() => new Entities.Payment(paymentId, orderId, amount));
+        
+        Assert.Equal("訂單編號不可為空",exception.Message);
+    }
 }
 
 

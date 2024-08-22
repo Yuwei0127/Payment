@@ -28,7 +28,7 @@ public class PaymentCompleteServiceTest
 
 
     [Fact]
-    public async Task HandleAsyncTest_輸入paymentId_完成付款成功_回傳True並回傳事件()
+    public async Task HandleAsyncTest_輸入paymentId_完成付款成功_回傳True並觸發發送事件()
     {
         var paymentId = Guid.NewGuid();
         var orderId = Guid.NewGuid();

@@ -14,6 +14,11 @@ public record RequestPaymentEvent(PaymentId Id, Guid OrderId,decimal Amount) : D
 public record PaymentFailedEvent(string FailedReason) : DomainEvent;
 
 /// <summary>
+/// 付款取消事件
+/// </summary>
+public record PaymentCancelEvent(string CancelReason) : DomainEvent;
+
+/// <summary>
 /// 付款完成
 /// </summary>
 public record PaymentCompletedEvent(string TransactionId) : DomainEvent;
